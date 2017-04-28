@@ -2,7 +2,7 @@ package proxy_test
 
 import (
 	"bytes"
-	. "github.com/zgagnon/auth-route-service/proxy"
+	. "github.com/zgagnon/authrouteservice/proxy"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -11,8 +11,10 @@ import (
 )
 
 var _ = Describe("Secured Proxy", func() {
-	roundtripper := FakeTripper{wasCalled: false}
-	logger := LoggingRoundTripper{Transporter: roundtripper}
+	var wasCalled = Evidence{wasCalled: false}
+	roundtripper := &FakeTripper{evidence: &wasCalled}
+	logger := &LoggingRoundTripper{Transporter: roundtripper}
+
 	Context("when the request has a session header", func() {
 		headers := make(map[string][]string)
 		headers["session_token"] = []string{"a secured session"}
@@ -23,15 +25,31 @@ var _ = Describe("Secured Proxy", func() {
 		It("should succeed", func() {
 			_ = "breakpoint"
 			logger.RoundTrip(request)
-			Expect(roundtripper.wasCalled).To(BeTrue())
+			Expect(wasCalled.wasCalled).To(BeTrue())
+		})
+	})
+
+	Context("when the request does not have a session header", func() {
+
+		request := httptest.NewRequest("GET", "http://test.com", bytes.NewBuffer([]byte{}))
+
+		It("should return a 302 response", func() {
+			response, err := logger.RoundTrip(request)
+			Expect(err).To(BeNil())
+			Expect(response.StatusCode).To(Equal(302))
 		})
 	})
 })
 
-type FakeTripper struct {
+type Evidence struct {
 	wasCalled bool
 }
 
+type FakeTripper struct {
+	evidence *Evidence
+}
+
 func (ft FakeTripper) RoundTrip(req *http.Request) (*http.Response, error) {
+	ft.evidence.wasCalled = true
 	return &http.Response{}, nil
 }

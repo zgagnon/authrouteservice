@@ -24,25 +24,27 @@ func NewLoggingRoundTripper(skipSslValidation bool) *LoggingRoundTripper {
 func (lrt *LoggingRoundTripper) RoundTrip(request *http.Request) (*http.Response, error) {
 	var err error
 	var res *http.Response
+	if len(request.Header["session_token"]) != 0 {
 
-	log.Printf("Forwarding to: %s\n", request.URL.String())
-	res, err = lrt.Transporter.RoundTrip(request)
-	if err != nil {
-		return nil, err
+		log.Printf("Forwarding to: %s\n", request.URL.String())
+		res, err = lrt.Transporter.RoundTrip(request)
+		if err != nil {
+			return nil, err
+		}
+
+		log.Println("")
+		log.Printf("Response Headers: %#v\n", res.Header)
+		log.Println("")
+		res.Body = request.Body
+
+		log.Println("Sending response to GoRouter...")
+
+	} else {
+		res = &http.Response{
+			Body:       ioutil.NopCloser(bytes.NewBufferString("")),
+			StatusCode: 302,
+		}
+
 	}
-
-	body, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		log.Fatalln(err.Error())
-	}
-	log.Println("")
-	log.Printf("Response Headers: %#v\n", res.Header)
-	log.Println("")
-	log.Printf("Response Body: %s\n", string(body))
-	log.Println("")
-	res.Body = ioutil.NopCloser(bytes.NewBuffer(body))
-
-	log.Println("Sending response to GoRouter...")
-
 	return res, err
 }
