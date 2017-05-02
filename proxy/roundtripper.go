@@ -10,6 +10,7 @@ import (
 
 type LoggingRoundTripper struct {
 	Transporter http.RoundTripper
+	Okta        string
 }
 
 func NewLoggingRoundTripper(skipSslValidation bool) *LoggingRoundTripper {
@@ -40,9 +41,12 @@ func (lrt *LoggingRoundTripper) RoundTrip(request *http.Request) (*http.Response
 		log.Println("Sending response to GoRouter...")
 
 	} else {
+		header := make(map[string][]string)
+		header["location"] = []string{lrt.Okta}
 		res = &http.Response{
 			Body:       ioutil.NopCloser(bytes.NewBufferString("")),
 			StatusCode: 302,
+			Header:     header,
 		}
 
 	}

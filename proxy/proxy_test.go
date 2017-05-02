@@ -13,7 +13,7 @@ import (
 var _ = Describe("Secured Proxy", func() {
 	var wasCalled = Evidence{wasCalled: false}
 	roundtripper := &FakeTripper{evidence: &wasCalled}
-	logger := &LoggingRoundTripper{Transporter: roundtripper}
+	logger := &LoggingRoundTripper{Transporter: roundtripper, Okta: "http://callback.com"}
 
 	Context("when the request has a session header", func() {
 		headers := make(map[string][]string)
@@ -37,6 +37,11 @@ var _ = Describe("Secured Proxy", func() {
 			response, err := logger.RoundTrip(request)
 			Expect(err).To(BeNil())
 			Expect(response.StatusCode).To(Equal(302))
+		})
+
+		It("should contain the okta address in the Location header", func() {
+			response, _ := logger.RoundTrip(request)
+			Expect(response.Header["location"][0]).To(Equal("http://callback.com"))
 		})
 	})
 })
