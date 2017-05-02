@@ -13,12 +13,13 @@ type LoggingRoundTripper struct {
 	Okta        string
 }
 
-func NewLoggingRoundTripper(skipSslValidation bool) *LoggingRoundTripper {
+func NewLoggingRoundTripper(skipSslValidation bool, authUrl string) *LoggingRoundTripper {
 	tr := &http.Transport{
 		TLSClientConfig: &tls.Config{InsecureSkipVerify: skipSslValidation},
 	}
 	return &LoggingRoundTripper{
 		Transporter: tr,
+		Okta:        authUrl,
 	}
 }
 
