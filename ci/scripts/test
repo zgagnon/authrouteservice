@@ -3,8 +3,6 @@
 export GOPATH=`pwd`
 export PATH="$PATH:$GOPATH/bin"
 
-mkdir -p github.com/zgagnon
-mv authrouteservice github.com/zgagnon
 (
 cd github.com/zgagnon/authroutservice
 
