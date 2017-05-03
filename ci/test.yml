@@ -11,4 +11,4 @@ inputs:
 - name: authrouteservice
 
 run:
-  path: auth-route-service/ci/scripts/test
+- path: authrouteservice/ci/scripts/test
