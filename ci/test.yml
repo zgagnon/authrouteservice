@@ -8,7 +8,7 @@ image_resource:
     tag: 1.8.1
 
 inputs:
--name: src
+- name: src
 
 run:
   path: src/ci/scripts/test

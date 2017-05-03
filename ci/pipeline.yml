@@ -1,6 +1,6 @@
 resources:
   - name: auth-route-service
-    type: github
+    type: git
     source:
         uri: git@github.com:zgagnon/authrouteservice.git
         branch: master
@@ -12,7 +12,7 @@ jobs:
       - get: auth-route-service
         trigger: true
       - task: unit
-        file: ci/test.yml
+        file: auth-route-service/ci/test.yml
 
   - name: push
     plan:
