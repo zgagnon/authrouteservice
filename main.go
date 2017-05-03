@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/zgagnon/auth-route-service/proxy"
+	"github.com/zgagnon/authrouteservice/proxy"
 	"log"
 	"net/http"
 	"os"

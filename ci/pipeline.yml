@@ -12,7 +12,7 @@ jobs:
       - get: auth-route-service
         trigger: true
       - task: unit
-        file: ci/unit.yml
+        file: ci/test.yml
 
   - name: push
     plan:
