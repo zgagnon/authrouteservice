@@ -1,5 +1,5 @@
 resources:
-  - name: auth-route-service
+  - name: authrouteservice
     type: git
     source:
         uri: git@github.com:zgagnon/authrouteservice.git
@@ -9,14 +9,14 @@ resources:
 jobs:
   - name: test
     plan:
-      - get: auth-route-service
+      - get: authrouteservice
         trigger: true
       - task: unit
-        file: auth-route-service/ci/test.yml
+        file: authrouteservice/ci/test.yml
 
   - name: push
     plan:
-      - get: auth-route-service
+      - get: authrouteservice
         passed: [test]
         trigger: true
       - task: push

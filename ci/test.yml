@@ -9,6 +9,7 @@ image_resource:
 
 inputs:
 - name: authrouteservice
+  path: github.com/zgagnon/
 
 run:
-  path: authrouteservice/ci/scripts/test
+  path: github.com/zgagnon/authrouteservice/ci/scripts/test
