@@ -1,5 +1,18 @@
 #!/bin/bash
 
+export GOPATH=`pwd`
+export PATH="$PATH:$GOPATH/bin"
+
+mkdir -p github.com/zgagnon
+mv authrouteservice github.com/zgagnon
+(
+cd github.com/zgagnon/authroutservice
+
+go get github.com/onsi/ginkgo
+go get github.com/onsi/ginkgo/ginkgo
+go get github.com/onsi/gomega
 go get github.com/tools/godep
+
 godep restore
 ginkgo main proxy
+)
