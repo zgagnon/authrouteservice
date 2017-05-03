@@ -9,7 +9,13 @@ image_resource:
 
 inputs:
 - name: authrouteservice
-  path: github.com/zgagnon/authrouteservice
+  path: go/src/github.com/zgagnon/authrouteservice
 
 run:
-  path: github.com/zgagnon/authrouteservice/ci/scripts/test
+  path: /bin/bash
+  args:
+    - -c
+    - |
+      export GOPATH=${PWD}/go
+      export PATH=$PATH:$GOPATH/bin
+      $GOPATH/src/github.com/zgagnon/authrouteservice/ci/scripts/test
