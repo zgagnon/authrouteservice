@@ -1,6 +1,6 @@
 # Example Route Service
 
-An example route service for Cloud Foundry.
+A Cloud Foundry Route Service which provides SAML 2.0 authentication and sso to bound apps.
 
 ## Route Service Overview
 
